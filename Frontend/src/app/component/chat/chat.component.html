@@ -1,0 +1,45 @@
+<div class="chat-container">
+    <div class="ribbon">
+        <button mat-button (click)="goBack()">Go Back</button>
+    </div>
+
+    <div class="content-container">
+        <mat-drawer class="users-column" mode="side" opened>
+            <h3 class="user-list-title">Users</h3>
+            <mat-nav-list>
+                <mat-list-item *ngFor="let user of users" [class.selected]="user.selected" (click)="selectUser(user)">
+                    {{ user.name }}
+                </mat-list-item>
+            </mat-nav-list>
+        </mat-drawer>
+
+        <div class="content-separator"></div>
+
+        <div class="conversation-column">
+            <div class="conversation" *ngIf="selectedUser.name !== ''">
+                <div *ngFor="let msg of messages" class="message" [ngClass]="{
+                    'my-message': msg.reply,
+                    'other-message': !msg.reply,
+                  }">
+                    <div class="message-header">
+                        <strong>{{ msg.user.name }}</strong>, {{ msg.date | date: 'dd-MM-yyyy' }}
+                    </div>
+                    <div class="message-text">
+                        {{ msg.text }}
+                        <span *ngIf="msg.reply && !msg.seen">&#10003;</span>
+                        <span *ngIf="msg.reply && msg.seen">&#10003;&#10003;</span>
+                    </div>
+                </div>
+            </div>
+            <div class="message-input-container" *ngIf="selectedUser.name !== ''">
+                <form [formGroup]="messageForm" class="message-form">
+                    <mat-form-field class="full-width" appearance="outline">
+                        <input formControlName="text" matInput placeholder="Type your message"
+                            (keyup)="onTyping($event)" (keydown.enter)="sendMessage()" />
+                    </mat-form-field>
+                </form>
+                <button mat-button class="send-button" (click)="sendMessage()"> Send </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+<mat-card>
+	<mat-card-content>
+		<div class="header">
+			<h2>START MONITORING</h2>
+		</div>
+		<form (ngSubmit)="onMonitor()" name="monitorForm" [formGroup]="monitorForm">
+			<div class="data-input">
+				<mat-form-field class="full-width" appearance="outline">
+					<mat-label> Device ID </mat-label>
+					<mat-select [(value)]="selectedID" (selectionChange)="changeDescription()">
+						<mat-option *ngFor="let id of ids" [value]="id.id">
+							{{ id.id }}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<div class="data-input">
+				<mat-form-field class="full-width" appearance="outline">
+					<mat-label> Device Description </mat-label>
+					<input matInput placeholder="Device Description" [value]="monitorForm.get('description')?.value" readonly />
+				</mat-form-field>
+			</div>
+			<button class="mat-button" mat-flat-button color="primary"> Start </button>
+		</form>
+	</mat-card-content>
+</mat-card>

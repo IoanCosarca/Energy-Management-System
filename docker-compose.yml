@@ -1,0 +1,167 @@
+version: "3.9"
+
+services:
+    rabbitmq:
+        image: "rabbitmq:3.13.0-rc.2-management"
+        ports:
+            - "15672:15672"
+            - "5672:5672"
+
+    device_db:
+        container_name: device_db
+        image: postgres:16
+        ports:
+            - "5433:5432"
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: "@Ionut17122001"
+            POSTGRES_DB: devices_details
+        volumes:
+            - device_pgdata:/var/lib/postgresql/data
+        networks:
+            - rabbitmq-network
+
+    device_app:
+        container_name: device_app
+        image: cosarca/device_app:1.0.0
+        build:
+            context: Devices Microservice
+            dockerfile: Dockerfile
+        ports:
+            - "8081:8081"
+        environment:
+            - DATABASE_URL=jdbc:postgresql://device_db:5432/devices_details
+            - DATABASE_USERNAME=postgres
+            - DATABASE_PASSWORD=@Ionut17122001
+        depends_on:
+            - device_db
+            - rabbitmq
+        networks:
+            - rabbitmq-network
+    
+    frontend:
+        container_name: frontend
+        image: cosarca/frontend:1.0.0
+        build:
+            context: Frontend
+            dockerfile: Dockerfile
+        ports:
+            - 4200:4200
+
+    simulator_app:
+        container_name: simulator_app
+        image: cosarca/simulator_app:1.0.0
+        build:
+            context: Smart Metering Device Simulator
+            dockerfile: Dockerfile
+        ports:
+            - "8083:8083"
+        depends_on:
+            - rabbitmq
+        networks:
+            - rabbitmq-network
+    
+    message_db:
+        container_name: message_db
+        image: postgres:16
+        ports:
+            - "5434:5432"
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: "@Ionut17122001"
+            POSTGRES_DB: message_details
+        volumes:
+            - message_pgdata:/var/lib/postgresql/data
+        networks:
+            - rabbitmq-network
+
+    monitoring_app:
+        container_name: monitoring_app
+        image: cosarca/monitoring_app:1.0.0
+        build:
+            context: Monitoring Communication Microservice
+            dockerfile: Dockerfile
+        ports:
+            - "8082:8082"
+        environment:
+            - DATABASE_URL=jdbc:postgresql://message_db:5432/message_details
+            - DATABASE_USERNAME=postgres
+            - DATABASE_PASSWORD=@Ionut17122001
+        depends_on:
+            - message_db
+            - rabbitmq
+        networks:
+            - rabbitmq-network
+    
+    monitoringfrontend:
+        container_name: monitoringfrontend
+        image: cosarca/monitoringfrontend:1.0.0
+        build:
+            context: MonitoringFrontend
+            dockerfile: Dockerfile
+        ports:
+            - 4201:4201
+    
+    user_db:
+        container_name: user_db
+        image: postgres:16
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: "@Ionut17122001"
+            POSTGRES_DB: users_details
+        volumes:
+            - user_pgdata:/var/lib/postgresql/data
+
+    user_app:
+        container_name: user_app
+        image: cosarca/user_app:1.0.0
+        build:
+            context: Users Microservice
+            dockerfile: Dockerfile
+        ports:
+            - "8080:8080"
+        environment:
+            - DATABASE_URL=jdbc:postgresql://user_db:5432/users_details
+            - DATABASE_USERNAME=postgres
+            - DATABASE_PASSWORD=@Ionut17122001
+        depends_on:
+            - user_db
+    
+    chat_db:
+        container_name: chat_db
+        image: postgres:16
+        ports:
+            - "5435:5432"
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: "@Ionut17122001"
+            POSTGRES_DB: chat_details
+        volumes:
+            - chat_pgdata:/var/lib/postgresql/data
+
+    chat_app:
+        container_name: chat_app
+        image: cosarca/chat_app:1.0.0
+        build:
+            context: Chat Microservice
+            dockerfile: Dockerfile
+        ports:
+            - "8084:8084"
+        environment:
+            - DATABASE_URL=jdbc:postgresql://chat_db:5432/chat_details
+            - DATABASE_USERNAME=postgres
+            - DATABASE_PASSWORD=@Ionut17122001
+        depends_on:
+            - chat_db
+
+volumes:
+    user_pgdata: {}
+    device_pgdata: {}
+    message_pgdata: {}
+    chat_pgdata: {}
+
+networks:
+    rabbitmq-network:
+        driver: bridge

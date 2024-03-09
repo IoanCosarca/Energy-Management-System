@@ -1,0 +1,113 @@
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.ribbon {
+    display: flex;
+    background-color: #1b6ca8;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.ribbon button {
+    font-size: 18px;
+}
+
+.content-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.users-column {
+    flex: 0 0 33%;
+    overflow-y: auto;
+    padding: 20px;
+    min-width: 200px;
+    max-width: 33%;
+}
+
+.conversation-column {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.conversation {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto; /* Add overflow-y for scrollbar */
+}
+
+.message {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.my-message {
+    align-self: flex-end;
+    background-color: #cfeefc; /* Background color for my messages */
+}
+
+.other-message {
+    align-self: flex-start;
+    background-color: #e0e0e0; /* Background color for other user's messages */
+}
+
+.message-header {
+    font-weight: bold;
+}
+
+.message-text {
+    margin-top: 5px;
+}
+
+.user-list-title {
+    font-size: 24px;
+}
+
+mat-nav-list mat-list-item {
+    cursor: pointer;
+    padding: 10px;
+    transition: background-color 0.3s;
+}
+
+mat-list-item:hover {
+    background-color: #f2f2f2;
+}
+
+.content-separator {
+    border-left: 1px solid #ccc; /* Choose the desired color for the separator */
+    height: 100%;
+}
+
+.message-input-container {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    background-color: white;
+    border-top: 1px solid #ccc;
+}
+
+.message-form {
+    flex: 7; /* Adjust based on your preference */
+}
+
+.full-width {
+	width: 100%;
+    height: 100%;
+}
+
+.send-button {
+    flex: 1; /* Adjust based on your preference */
+    font-size: 16px;
+    width: 100%;
+    height: 80%;
+}

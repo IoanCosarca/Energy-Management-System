@@ -1,0 +1,13 @@
+<mat-toolbar color="primary">
+	<span> Energy Management System </span>
+	<div class="spacer"></div>
+	<button mat-button (click)="accessHome()"> Home </button>
+	<button mat-button *ngIf="isAdmin == true" (click)="accessAccounts()"> Accounts </button>
+	<button mat-button (click)="accessDevices()"> Devices </button>
+	<button mat-button *ngIf="isAdmin == true" (click)="accessAddDevice()"> Add Device </button>
+	<button mat-button (click)="accessNotifications()"> History </button>
+	<button mat-button (click)="openChats()">
+		<img class="chatIcon" src="assets/chatIcon.png">
+	</button>
+	<button mat-button (click)="logOut()"> Log Out </button>
+</mat-toolbar>

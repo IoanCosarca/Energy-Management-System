@@ -1,0 +1,42 @@
+<mat-card>
+	<mat-card-content>
+		<div class="header">
+			<h2>REGISTER</h2>
+		</div>
+		<form (ngSubmit)="onRegister()" name="registerForm" [formGroup]="registerForm">
+			<div class="data-input">
+				<mat-form-field class="full-width" appearance="outline">
+					<mat-label> Name </mat-label>
+					<input formControlName="name" matInput placeholder="Your name" required />
+					<mat-error *ngIf="!registerForm.controls['name'].valid">
+						Please Enter Your Name
+					</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="data-input">
+				<mat-form-field class="full-width" appearance="outline">
+					<mat-label> Email </mat-label>
+					<input formControlName="email" matInput placeholder="Enter email address" required />
+					<mat-error *ngIf="!registerForm.controls['email'].valid">
+						Email Address not valid
+					</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="data-input">
+				<mat-form-field class="full-width" appearance="outline">
+					<mat-label> Password </mat-label>
+					<input formControlName="password" matInput [type]="hide ? 'password': 'text'" required />
+					<button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide Password'"
+						[attr.aria-pressed]="hide">
+						<mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+					</button>
+					<mat-error *ngIf="!registerForm.controls['password'].valid">
+						Password must have at least 6 characters
+					</mat-error>
+				</mat-form-field>
+			</div>
+			<button class="mat-button" mat-flat-button color="primary"> Register </button>
+			<button class="mat-button" mat-flat-button color="primary" routerLink="/"> Go Back </button>
+		</form>
+	</mat-card-content>
+</mat-card>

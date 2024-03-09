@@ -1,0 +1,14 @@
+<app-navbar />
+
+<div class="calendar">
+	<mat-card class="demo-inline-calendar-card">
+		<mat-calendar [(selected)]="selected" (selectedChange)="updateChart()"></mat-calendar>
+	</mat-card>
+	<p> Consumption in: {{selected}} </p>
+</div>
+
+<div id="chart">
+	<apx-chart [series]="chartOptions!.series!" [chart]="chartOptions!.chart!" [xaxis]="chartOptions!.xaxis!"
+		[dataLabels]="chartOptions!.dataLabels!" [grid]="chartOptions!.grid!"
+		[stroke]="chartOptions!.stroke!"></apx-chart>
+</div>
